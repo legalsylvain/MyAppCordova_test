@@ -1,27 +1,43 @@
 var app = {
-    // Application Constructor
     initialize: function() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        this.bindEvents();
+        this.setupVue();
     },
-
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
+        app.receivedEvent('deviceready');
     },
-
-    // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
         console.log('Received Event: ' + id);
+    },
+    setupVue: function() {
+        var vm = new Vue({
+            el: "#vue-instance",
+            data: {
+                randomWord: '',
+                words: [
+                    'formidable',
+                    'gracious',
+                    'daft',
+                    'mundane',
+                    'onomatopoeia'
+                ]
+            },
+            methods: {
+                getRandomWord: function() {
+                    this.randomWord = '...';
+                    this.$http.get(
+                        'http://api.wordnik.com:80/v4/words.json/randomWord?api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5'
+                    ).then(function (response) {
+                        this.randomWord = response.data.word;
+                    }, function (error) {
+                        alert(error.data);
+                    });
+                }
+            }
+        });
     }
 };
 
