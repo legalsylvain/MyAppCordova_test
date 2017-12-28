@@ -17,13 +17,6 @@ var app = {
             el: "#vue-instance",
             data: {
                 randomWord: '',
-                words: [
-                    'formidable',
-                    'gracious',
-                    'daft',
-                    'mundane',
-                    'onomatopoeia'
-                ]
             },
             methods: {
                 getRandomWord: function() {
